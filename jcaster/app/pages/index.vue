@@ -401,6 +401,7 @@ const imagePreview = ref(null);
 const currentImage = ref(null);
 const categories = [
   "Electronics",
+  "Motor parts and accessories",
   "Fashion",
   "Sports",
   "Bags",
