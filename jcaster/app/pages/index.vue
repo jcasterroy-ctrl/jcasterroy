@@ -484,7 +484,7 @@
           <!-- Brand -->
           <v-col cols="12" md="4">
             <h2 class="text-h5 font-weight-bold mb-3">
-              Nova<span class="text-teal-lighten-2">Mart</span>
+              Caster<span class="text-teal-lighten-2">Mart</span>
             </h2>
 
             <p class="text-grey-lighten-1 text-body-2 mb-4">
