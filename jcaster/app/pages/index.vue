@@ -163,7 +163,7 @@
           :color="selectedCategory === category ? 'teal-darken-3' : undefined"
           :variant="selectedCategory === category ? 'flat' : 'outlined'"
           size="large"
-          @click= "selectedCategory === category"
+          @click= "selectedCategory = category"
           >{{ category }}</v-chip
         >
       </div>
@@ -525,9 +525,15 @@ const {
 });
 
 const products = computed(() => response.value?.data ?? []);
-const categories = computed(() => [
-  ...new Set(products.value.map((product) => product.category).filter(Boolean)),
-]);
+const categories = computed<string[]>(() => {
+  return [
+    ...new Set(
+      products.value
+        .map(product => product.category)
+        .filter((category): category is string => Boolean(category))
+    )
+  ]
+})
 const filteredProducts = computed(() => {
   const keyword = searchQuery.value.toLowerCase().trim();
   return products.value
@@ -819,7 +825,6 @@ function subscribeNewsletter() {
   min-height: 3em;
   margin-top: 8px;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
