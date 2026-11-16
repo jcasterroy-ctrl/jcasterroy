@@ -549,7 +549,7 @@
 
             <div class="d-flex align-center ga-2 mb-3">
               <v-icon size="small">mdi-email-outline</v-icon>
-              <span class="text-body-2">support@novamart.com</span>
+              <span class="text-body-2">support@castermart.com</span>
             </div>
 
             <div class="d-flex align-center ga-2 mb-3">
@@ -573,7 +573,7 @@
           class="d-flex flex-column flex-sm-row justify-space-between align-center ga-2"
         >
           <p class="text-grey-lighten-1 text-caption">
-            © {{ new Date().getFullYear() }} NovaMart. All rights reserved.
+            © {{ new Date().getFullYear() }} casterMart. All rights reserved.
           </p>
 
           <p class="text-grey-lighten-1 text-caption">
