@@ -163,7 +163,7 @@
           :color="selectedCategory === category ? 'teal-darken-3' : undefined"
           :variant="selectedCategory === category ? 'flat' : 'outlined'"
           size="large"
-          @click= "selectedCategory = category"
+          @click="selectedCategory = category"
           >{{ category }}</v-chip
         >
       </div>
@@ -477,6 +477,112 @@
       message
     }}</v-snackbar>
   </v-container>
+  <v-footer class="bg-grey-darken-4 text-white pa-0">
+    <v-container fluid class="pa-0">
+      <v-container class="py-10">
+        <v-row>
+          <!-- Brand -->
+          <v-col cols="12" md="4">
+            <h2 class="text-h5 font-weight-bold mb-3">
+              Nova<span class="text-teal-lighten-2">Mart</span>
+            </h2>
+
+            <p class="text-grey-lighten-1 text-body-2 mb-4">
+              Your everyday shopping destination. Discover quality products at
+              affordable prices.
+            </p>
+
+            <div class="d-flex ga-3">
+              <v-btn
+                icon="mdi-facebook"
+                variant="text"
+                color="white"
+                href="https://facebook.com"
+                target="_blank"
+              />
+              <v-btn
+                icon="mdi-instagram"
+                variant="text"
+                color="white"
+                href="https://instagram.com"
+                target="_blank"
+              />
+              <v-btn
+                icon="mdi-twitter"
+                variant="text"
+                color="white"
+                href="https://x.com"
+                target="_blank"
+              />
+            </div>
+          </v-col>
+
+          <!-- Quick Links -->
+          <v-col cols="6" md="2">
+            <h3 class="text-subtitle-1 font-weight-bold mb-4">Quick Links</h3>
+
+            <div class="d-flex flex-column ga-3">
+              <NuxtLink to="/" class="footer-link">Home</NuxtLink>
+              <NuxtLink to="/products" class="footer-link">Products</NuxtLink>
+              <a href="#about" class="footer-link">About Us</a>
+              <a href="#contact" class="footer-link">Contact</a>
+            </div>
+          </v-col>
+
+          <!-- Customer Service -->
+          <v-col cols="6" md="3">
+            <h3 class="text-subtitle-1 font-weight-bold mb-4">
+              Customer Service
+            </h3>
+
+            <div class="d-flex flex-column ga-3">
+              <a href="#" class="footer-link">Help Center</a>
+              <a href="#" class="footer-link">Shipping Information</a>
+              <a href="#" class="footer-link">Returns & Refunds</a>
+              <a href="#" class="footer-link">Privacy Policy</a>
+            </div>
+          </v-col>
+
+          <!-- Contact -->
+          <v-col cols="12" md="3">
+            <h3 class="text-subtitle-1 font-weight-bold mb-4">Contact Us</h3>
+
+            <div class="d-flex align-center ga-2 mb-3">
+              <v-icon size="small">mdi-email-outline</v-icon>
+              <span class="text-body-2">support@novamart.com</span>
+            </div>
+
+            <div class="d-flex align-center ga-2 mb-3">
+              <v-icon size="small">mdi-phone-outline</v-icon>
+              <span class="text-body-2">+63 912 345 6789</span>
+            </div>
+
+            <div class="d-flex align-center ga-2">
+              <v-icon size="small">mdi-map-marker-outline</v-icon>
+              <span class="text-body-2">Philippines</span>
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
+
+      <v-divider color="grey-darken-2" />
+
+      <!-- Copyright -->
+      <v-container class="py-4">
+        <div
+          class="d-flex flex-column flex-sm-row justify-space-between align-center ga-2"
+        >
+          <p class="text-grey-lighten-1 text-caption">
+            © {{ new Date().getFullYear() }} NovaMart. All rights reserved.
+          </p>
+
+          <p class="text-grey-lighten-1 text-caption">
+            Designed with ❤️ for better shopping.
+          </p>
+        </div>
+      </v-container>
+    </v-container>
+  </v-footer>
 </template>
 
 <script setup lang="ts">
@@ -498,7 +604,7 @@ interface CartItem extends Product {
 const config = useRuntimeConfig();
 const STRAPI_URL = config.public.strapiUrl;
 
-useHead({ title: "NovaMart | Everyday Finds" });
+useHead({ title: "Caster Motor Shop" });
 
 const searchQuery = ref("");
 const selectedCategory = ref("All");
@@ -529,11 +635,11 @@ const categories = computed<string[]>(() => {
   return [
     ...new Set(
       products.value
-        .map(product => product.category)
-        .filter((category): category is string => Boolean(category))
-    )
-  ]
-})
+        .map((product) => product.category)
+        .filter((category): category is string => Boolean(category)),
+    ),
+  ];
+});
 const filteredProducts = computed(() => {
   const keyword = searchQuery.value.toLowerCase().trim();
   return products.value
@@ -884,5 +990,15 @@ function subscribeNewsletter() {
   .benefit-item {
     padding: 5px 0;
   }
+}
+.footer-link {
+  color: #bdbdbd;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #80cbc4;
 }
 </style>
