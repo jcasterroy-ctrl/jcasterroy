@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     public: {
-      strapiUrl: 'NUXT_PUBLIC_STRAPI_URL',
+      strapiUrl: 'http://localhost:1337',
       },
     },
      modules: [
