@@ -1021,11 +1021,11 @@
 
 <script setup lang="ts">
 useHead({
-  title: "Mikē",
+  title: "SyCast",
   meta: [
     {
       name: "description",
-      content: "Discover everyday essentials and timeless finds at Mikē.",
+      content: "Discover everyday essentials and timeless finds at SyCast.",
     },
     {
       name: "theme-color",
@@ -1685,7 +1685,7 @@ function subscribeNewsletter() {
     return;
   }
 
-  cartMessage.value = "Welcome to the Mikē community!";
+  cartMessage.value = "Welcome to the SyCast community!";
   showCartMessage.value = true;
   newsletterEmail.value = "";
 }
