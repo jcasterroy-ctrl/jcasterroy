@@ -71,6 +71,7 @@
               <v-icon size="25">mdi-heart-outline</v-icon>
             </v-badge>
           </v-btn>
+
           <v-spacer />
 
           <!-- DESKTOP CART -->
@@ -295,7 +296,9 @@
               <v-icon end>mdi-arrow-right</v-icon>
             </v-btn>
 
-            <p class="text-caption text-center mt-3">Checkout coming soon.</p>
+            <p class="text-caption text-center mt-3">
+              Please review your items before checkout.
+            </p>
           </div>
         </div>
       </v-navigation-drawer>
@@ -312,7 +315,6 @@
           <div class="d-flex align-center justify-space-between">
             <div>
               <h2 class="text-h5 font-weight-bold">My Wishlist</h2>
-
               <p class="text-caption text-grey">
                 {{ wishlist.length }} saved items
               </p>
@@ -336,7 +338,6 @@
           <v-icon size="65" color="grey-lighten-1"> mdi-heart-outline </v-icon>
 
           <h3 class="mt-4">Your wishlist is empty</h3>
-
           <p class="text-grey mt-2">Save your favorite products here.</p>
 
           <v-btn color="black" class="mt-5" @click="wishlistDrawer = false">
@@ -391,14 +392,14 @@
 
       <!-- CHECKOUT DIALOG -->
       <v-dialog v-model="checkoutDialog" max-width="1050" scrollable>
-        <v-card rounded="lg" class="checkout-card" color="#181818">
+        <v-card rounded="lg" class="checkout-card" color="#181818" theme="dark">
           <!-- HEADER -->
           <div class="checkout-header">
             <div>
               <span class="cart-header-eyebrow" style="color: #b6ff00">
                 Caster & Sy — CHECKOUT
               </span>
-              <h2 style="color: white">COMPLETE YOUR ORDER.</h2>
+              <h2 style="color: #ffffff">COMPLETE YOUR ORDER.</h2>
             </div>
 
             <v-btn
@@ -424,7 +425,7 @@
                   v-model="customer.name"
                   label="Full Name"
                   variant="outlined"
-                  base-color="#888888"
+                  base-color="#FFFFFF"
                   color="#B6FF00"
                   bg-color="#252525"
                   :disabled="isCheckingOut"
@@ -436,7 +437,7 @@
                   label="Email Address"
                   type="email"
                   variant="outlined"
-                  base-color="#888888"
+                  base-color="#FFFFFF"
                   color="#B6FF00"
                   bg-color="#252525"
                   :disabled="isCheckingOut"
@@ -447,7 +448,7 @@
                   v-model="customer.phone"
                   label="Phone Number"
                   variant="outlined"
-                  base-color="#888888"
+                  base-color="#FFFFFF"
                   color="#B6FF00"
                   bg-color="#252525"
                   :disabled="isCheckingOut"
@@ -458,7 +459,7 @@
                   v-model="customer.address"
                   label="Complete Shipping Address"
                   variant="outlined"
-                  base-color="#888888"
+                  base-color="#FFFFFF"
                   color="#B6FF00"
                   bg-color="#252525"
                   rows="3"
@@ -507,21 +508,22 @@
                       height="65"
                       cover
                     />
-                    <v-icon v-else size="30" color="#888888">
+                    <v-icon v-else size="30" color="#FFFFFF">
                       mdi-image-outline
                     </v-icon>
                   </div>
 
                   <div class="flex-grow-1">
-                    <div class="font-weight-bold" style="color: white">
+                    <div class="font-weight-bold" style="color: #ffffff">
                       {{ item.name }}
                     </div>
-                    <div class="text-caption" style="color: #999999">
+
+                    <div class="text-caption" style="color: #ffffff">
                       {{ formatPrice(item.price) }} × {{ item.quantity }}
                     </div>
                   </div>
 
-                  <strong style="color: white">
+                  <strong style="color: #ffffff">
                     {{ formatPrice(item.price * item.quantity) }}
                   </strong>
                 </div>
@@ -529,19 +531,19 @@
                 <v-divider class="my-5" color="#383838" />
 
                 <div class="d-flex justify-space-between mb-3">
-                  <span style="color: #999999">Total Items</span>
-                  <strong style="color: white">{{ cartItemCount }}</strong>
+                  <span style="color: #ffffff">Total Items</span>
+                  <strong style="color: #ffffff">{{ cartItemCount }}</strong>
                 </div>
 
                 <div class="d-flex justify-space-between mb-3">
-                  <span style="color: #999999">Subtotal</span>
-                  <strong style="color: white">
+                  <span style="color: #ffffff">Subtotal</span>
+                  <strong style="color: #ffffff">
                     {{ formatPrice(cartTotal) }}
                   </strong>
                 </div>
 
                 <div class="d-flex justify-space-between text-h6 mt-5">
-                  <strong style="color: white">TOTAL</strong>
+                  <strong style="color: #ffffff">TOTAL</strong>
                   <strong style="color: #b6ff00">
                     {{ formatPrice(cartTotal) }}
                   </strong>
@@ -571,7 +573,7 @@
                   <v-icon end>mdi-arrow-right</v-icon>
                 </v-btn>
 
-                <p class="text-caption text-center mt-3" style="color: #888888">
+                <p class="text-caption text-center mt-3" style="color: #ffffff">
                   Please review your information before placing your order.
                 </p>
               </v-col>
@@ -579,6 +581,7 @@
           </v-card-text>
         </v-card>
       </v-dialog>
+
       <!-- ORDER SUCCESS DIALOG -->
       <v-dialog v-model="successDialog" max-width="520" persistent>
         <v-card class="success-card" rounded="xl">
@@ -854,7 +857,7 @@
                   <v-icon size="60">mdi-image-outline</v-icon>
                 </div>
 
-                <!-- CLICKABLE WISHLIST BUTTON -->
+                <!-- WISHLIST BUTTON -->
                 <v-btn
                   icon
                   size="small"
@@ -1017,14 +1020,12 @@
 </template>
 
 <script setup lang="ts">
-// SEO
 useHead({
-  title: "Caster & Sy | Move Your Way",
+  title: "Mikē",
   meta: [
     {
       name: "description",
-      content:
-        "Discover everyday essentials and timeless finds at Caster & Sy.",
+      content: "Discover everyday essentials and timeless finds at Mikē.",
     },
     {
       name: "theme-color",
@@ -1033,11 +1034,6 @@ useHead({
   ],
 });
 
-// STRAPI CONFIG
-const config = useRuntimeConfig();
-const STRAPI_URL = config.public.strapiUrl;
-
-// PRODUCT INTERFACE
 interface Product {
   id: number;
   documentId: string;
@@ -1050,25 +1046,87 @@ interface Product {
   image: any;
 }
 
-// CART INTERFACE
 interface CartItem extends Product {
   quantity: number;
 }
 
-// SEARCH
+const config = useRuntimeConfig();
+const STRAPI_URL = config.public.strapiUrl;
+
+// HERO SLIDES
+const heroSlides = [
+  {
+    number: "01",
+    class: "slide-one",
+    eyebrow: "THE NEW COLLECTION",
+    heading: "MOVE<br>YOUR<br>WAY.",
+    description:
+      "Everyday essentials. Timeless style. Discover your next favorite find.",
+    button: "SHOP NOW",
+    label: "EVERYDAY COLLECTION",
+  },
+  {
+    number: "02",
+    class: "slide-two",
+    eyebrow: "FIND YOUR STYLE",
+    heading: "OWN<br>YOUR<br>LOOK.",
+    description: "Simple pieces. Strong identity. Make every day your own.",
+    button: "EXPLORE NOW",
+    label: "STYLE COLLECTION",
+  },
+  {
+    number: "03",
+    class: "slide-three",
+    eyebrow: "MADE FOR EVERYDAY",
+    heading: "LIVE<br>IN<br>STYLE.",
+    description:
+      "Discover fresh finds designed to fit your everyday lifestyle.",
+    button: "DISCOVER MORE",
+    label: "LIFESTYLE COLLECTION",
+  },
+];
+
+// SEARCH AND CATEGORY
 const searchQuery = ref("");
 const selectedCategory = ref("All");
 
 // DRAWERS
 const cartDrawer = ref(false);
-const wishlistDrawer = ref(false);
 const mobileMenu = ref(false);
+const wishlistDrawer = ref(false);
 
 // CART
 const cart = ref<CartItem[]>([]);
+const isCartLoaded = ref(false);
+const CART_STORAGE_KEY = "mike-shopping-cart";
 
-// WISHLIST
-const wishlist = ref<string[]>([]);
+onMounted(() => {
+  try {
+    const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+
+    if (savedCart) {
+      const parsedCart = JSON.parse(savedCart);
+
+      if (Array.isArray(parsedCart)) {
+        cart.value = parsedCart;
+      }
+    }
+  } catch (error) {
+    console.error("Unable to restore cart:", error);
+    localStorage.removeItem(CART_STORAGE_KEY);
+  }
+
+  isCartLoaded.value = true;
+});
+
+watch(
+  cart,
+  (newCart) => {
+    if (!isCartLoaded.value) return;
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newCart));
+  },
+  { deep: true },
+);
 
 // NOTIFICATION
 const showCartMessage = ref(false);
@@ -1079,7 +1137,6 @@ const {
   data: response,
   pending,
   error,
-  refresh: refreshProducts,
 } = await useFetch<{ data: Product[] }>(`${STRAPI_URL}/api/products`, {
   lazy: true,
   query: {
@@ -1090,17 +1147,118 @@ const {
   },
 });
 
-// PRODUCTS
-const products = computed(() => response.value?.data ?? []);
+// ========================================
+// SCROLL REVEAL
+// ========================================
+
+let revealObserver: IntersectionObserver | null = null;
+
+function initializeScrollReveal() {
+  if (typeof window === "undefined") return;
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll(".scroll-reveal").forEach((element) => {
+      element.classList.add("is-visible");
+    });
+    return;
+  }
+
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver?.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.08,
+        rootMargin: "0px 0px -60px 0px",
+      },
+    );
+  }
+
+  document
+    .querySelectorAll(".scroll-reveal:not(.is-visible)")
+    .forEach((element) => {
+      revealObserver?.observe(element);
+    });
+}
+
+watch(
+  pending,
+  async (isPending) => {
+    if (!isPending) {
+      await nextTick();
+      initializeScrollReveal();
+    }
+  },
+  { immediate: true, flush: "post" },
+);
+
+onMounted(async () => {
+  await nextTick();
+
+  if (!pending.value) {
+    initializeScrollReveal();
+  }
+});
+
+onBeforeUnmount(() => {
+  revealObserver?.disconnect();
+  revealObserver = null;
+});
+
+// SHARED PRODUCT STATE
+const products = useState<Product[]>("products", () => []);
+
+watch(
+  response,
+  (newResponse) => {
+    if (newResponse?.data) {
+      products.value = newResponse.data;
+    }
+  },
+  { immediate: true },
+);
+
+// UPDATE PRODUCT STATE AFTER CHECKOUT
+function updateProductState(updatedProduct: Product) {
+  const index = products.value.findIndex(
+    (product) => product.documentId === updatedProduct.documentId,
+  );
+
+  if (index === -1) return;
+
+  const existingProduct = products.value[index];
+  if (!existingProduct) return;
+
+  products.value[index] = {
+    ...existingProduct,
+    ...updatedProduct,
+    image: updatedProduct.image || existingProduct.image,
+  };
+}
 
 // CATEGORIES
-const categories = computed(() => {
-  return [
-    ...new Set(
-      products.value.map((product) => product.category).filter(Boolean),
-    ),
-  ];
-});
+const categories = computed(() => [
+  ...new Set(products.value.map((product) => product.category).filter(Boolean)),
+]);
+
+// CATEGORY CLICK
+function scrollToProducts() {
+  document.getElementById("products")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+function selectCategory(category: string) {
+  selectedCategory.value = category;
+  scrollToProducts();
+}
 
 // FILTER PRODUCTS
 const filteredProducts = computed(() => {
@@ -1124,17 +1282,14 @@ const filteredProducts = computed(() => {
 });
 
 // CART COUNT
-const cartItemCount = computed(() => {
-  return cart.value.reduce((total, item) => total + item.quantity, 0);
-});
+const cartItemCount = computed(() =>
+  cart.value.reduce((total, item) => total + item.quantity, 0),
+);
 
 // CART TOTAL
-const cartTotal = computed(() => {
-  return cart.value.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0,
-  );
-});
+const cartTotal = computed(() =>
+  cart.value.reduce((total, item) => total + item.price * item.quantity, 0),
+);
 
 // ADD TO CART
 function addToCart(product: Product) {
@@ -1163,11 +1318,11 @@ function addToCart(product: Product) {
     });
   }
 
-  cartMessage.value = `${product.name} added to your bag!`;
+  cartMessage.value = `${product.name} added to your cart!`;
   showCartMessage.value = true;
 }
 
-// INCREASE QUANTITY
+// QUANTITY
 function increaseQuantity(documentId: string) {
   const item = cart.value.find((item) => item.documentId === documentId);
 
@@ -1176,7 +1331,6 @@ function increaseQuantity(documentId: string) {
   }
 }
 
-// DECREASE QUANTITY
 function decreaseQuantity(documentId: string) {
   const item = cart.value.find((item) => item.documentId === documentId);
 
@@ -1197,7 +1351,7 @@ function clearCart() {
   showCartMessage.value = true;
 }
 
-// CHECKOUT STATE
+// CHECKOUT
 const checkoutDialog = ref(false);
 const isCheckingOut = ref(false);
 const checkoutError = ref("");
@@ -1221,29 +1375,29 @@ const checkoutErrors = reactive({
   paymentMethod: "",
 });
 
-// OPEN CHECKOUT
+function clearCheckoutErrors() {
+  Object.keys(checkoutErrors).forEach((key) => {
+    checkoutErrors[key as keyof typeof checkoutErrors] = "";
+  });
+}
+
 function openCheckout() {
   if (cart.value.length === 0) {
-    cartMessage.value = "Your bag is empty.";
+    cartMessage.value = "Your cart is empty.";
     showCartMessage.value = true;
     return;
   }
 
   checkoutError.value = "";
-
-  Object.keys(checkoutErrors).forEach((key) => {
-    checkoutErrors[key as keyof typeof checkoutErrors] = "";
-  });
+  clearCheckoutErrors();
 
   cartDrawer.value = false;
   checkoutDialog.value = true;
 }
 
-// CUSTOMER VALIDATION
+// VALIDATION
 function validateCheckout(): boolean {
-  Object.keys(checkoutErrors).forEach((key) => {
-    checkoutErrors[key as keyof typeof checkoutErrors] = "";
-  });
+  clearCheckoutErrors();
 
   let valid = true;
 
@@ -1275,7 +1429,7 @@ function validateCheckout(): boolean {
   return valid;
 }
 
-// STRAPI REQUEST HELPER
+// STRAPI REQUEST
 async function strapiRequest(endpoint: string, method = "GET", body?: unknown) {
   const response = await fetch(`${STRAPI_URL}${endpoint}`, {
     method,
@@ -1312,7 +1466,7 @@ async function submitCheckout() {
   isCheckingOut.value = true;
 
   try {
-    // STEP 1: RECHECK CURRENT PRODUCT DATA FROM STRAPI
+    // STEP 1: VERIFY PRODUCTS AND STOCK
     const verifiedItems = [];
 
     for (const item of cart.value) {
@@ -1341,7 +1495,7 @@ async function submitCheckout() {
       });
     }
 
-    // STEP 2: COMPUTE TOTAL USING STRAPI PRICES
+    // STEP 2: COMPUTE TOTAL
     const totalItems = verifiedItems.reduce(
       (total, item) => total + item.quantity,
       0,
@@ -1390,19 +1544,18 @@ async function submitCheckout() {
       });
     }
 
-    // STEP 5: DEDUCT PRODUCT STOCK
+    // STEP 5: DEDUCT STOCK AND PRESERVE IMAGE
     for (const item of verifiedItems) {
       const before = await strapiRequest(
         `/api/products/${encodeURIComponent(item.documentId)}?populate=image`,
       );
 
-      console.log("BEFORE UPDATE:", {
-        name: before.data?.name,
-        stock: before.data?.stock,
-        image: before.data?.image,
-      });
+      if (!before.data) {
+        throw new Error(`Unable to fetch product: ${item.name}`);
+      }
 
       const remainingStock = item.stock - item.quantity;
+      const existingImageId = before.data.image?.id;
 
       await strapiRequest(
         `/api/products/${encodeURIComponent(item.documentId)}`,
@@ -1410,38 +1563,34 @@ async function submitCheckout() {
         {
           data: {
             stock: remainingStock,
+            ...(existingImageId
+              ? {
+                  image: {
+                    connect: [existingImageId],
+                  },
+                }
+              : {}),
           },
         },
       );
 
-      const after = await strapiRequest(
+      const updated = await strapiRequest(
         `/api/products/${encodeURIComponent(item.documentId)}?populate=image`,
       );
 
-      console.log("AFTER UPDATE:", {
-        name: after.data?.name,
-        stock: after.data?.stock,
-        image: after.data?.image,
-      });
-
-      if (!after.data?.image) {
-        console.error("WARNING: PRODUCT IMAGE IS MISSING AFTER UPDATE!");
+      if (!updated.data) {
+        throw new Error(`Unable to fetch updated product: ${item.name}`);
       }
+
+      const productWithImage = {
+        ...updated.data,
+        image: updated.data.image || before.data.image,
+      };
+
+      updateProductState(productWithImage);
     }
 
-    // STEP 6: SUCCESS
-    console.log(
-      "PRODUCT LISTING AFTER CHECKOUT:",
-      products.value.map((product) => ({
-        name: product.name,
-        image: product.image,
-        imageUrl: getImageUrl(product.image),
-      })),
-    );
-
-    await refreshProducts();
-
-    // CLEAR CART AFTER SUCCESSFUL CHECKOUT
+    // STEP 6: COMPLETE CHECKOUT
     cart.value = [];
 
     customer.name = "";
@@ -1451,7 +1600,6 @@ async function submitCheckout() {
     customer.paymentMethod = "COD";
 
     checkoutDialog.value = false;
-
     completedOrderId.value = orderId;
     successDialog.value = true;
   } catch (error: any) {
@@ -1490,80 +1638,9 @@ function formatPrice(price: number): string {
   }).format(price || 0);
 }
 
-// ========================================
-// CART & WISHLIST PERSISTENCE
-// ========================================
+// WISHLIST
+const wishlist = ref<string[]>([]);
 
-// LOAD SAVED CART AND WISHLIST
-onMounted(() => {
-  // LOAD CART
-  const savedCart = localStorage.getItem("caster-cart");
-
-  if (savedCart) {
-    try {
-      const parsedCart = JSON.parse(savedCart);
-
-      if (Array.isArray(parsedCart)) {
-        cart.value = parsedCart.filter(
-          (item) =>
-            item &&
-            typeof item.documentId === "string" &&
-            typeof item.quantity === "number" &&
-            item.quantity > 0,
-        );
-      }
-    } catch (error) {
-      console.error("Failed to load cart:", error);
-      cart.value = [];
-    }
-  }
-
-  // LOAD WISHLIST
-  const savedWishlist = localStorage.getItem("caster-wishlist");
-
-  if (savedWishlist) {
-    try {
-      const parsedWishlist = JSON.parse(savedWishlist);
-
-      if (Array.isArray(parsedWishlist)) {
-        wishlist.value = parsedWishlist.filter(
-          (id): id is string => typeof id === "string",
-        );
-      }
-    } catch (error) {
-      console.error("Failed to load wishlist:", error);
-      wishlist.value = [];
-    }
-  }
-});
-
-// SAVE CART AUTOMATICALLY
-watch(
-  cart,
-  (newCart) => {
-    if (import.meta.client) {
-      localStorage.setItem("caster-cart", JSON.stringify(newCart));
-    }
-  },
-  { deep: true },
-);
-
-// SAVE WISHLIST AUTOMATICALLY
-watch(
-  wishlist,
-  (newWishlist) => {
-    if (import.meta.client) {
-      localStorage.setItem("caster-wishlist", JSON.stringify(newWishlist));
-    }
-  },
-  { deep: true },
-);
-
-// ========================================
-// WISHLIST FUNCTIONS
-// ========================================
-
-// TOGGLE WISHLIST
 function toggleWishlist(product: Product) {
   const productId = product.documentId;
 
@@ -1578,16 +1655,13 @@ function toggleWishlist(product: Product) {
   showCartMessage.value = true;
 }
 
-// CHECK WISHLIST
 function isWishlisted(product: Product): boolean {
   return wishlist.value.includes(product.documentId);
 }
 
-// REMOVE WISHLIST ITEM
 function removeFromWishlist(productId: string) {
   wishlist.value = wishlist.value.filter((id) => id !== productId);
-
-  cartMessage.value = "Product removed from wishlist.";
+  cartMessage.value = "Item removed from wishlist.";
   showCartMessage.value = true;
 }
 
@@ -1611,7 +1685,7 @@ function subscribeNewsletter() {
     return;
   }
 
-  cartMessage.value = "Welcome to the Caster & Sy community!";
+  cartMessage.value = "Welcome to the Mikē community!";
   showCartMessage.value = true;
   newsletterEmail.value = "";
 }
