@@ -24,28 +24,74 @@
 
           <v-spacer />
 
+          <!-- DESKTOP NAVIGATION -->
           <div class="desktop-navigation">
-            <v-btn href="#top" variant="text" color="black">HOME</v-btn>
-            <v-btn href="#products" variant="text" color="black">SHOP</v-btn>
-            <v-btn to="/products" variant="text" color="black"
-              >COLLECTIONS</v-btn
+            <v-btn
+              href="#top"
+              variant="text"
+              class="nav-link"
+              prepend-icon="mdi-home-outline"
             >
+              HOME
+            </v-btn>
+
+            <v-btn
+              href="#products"
+              variant="text"
+              class="nav-link"
+              prepend-icon="mdi-storefront-outline"
+            >
+              SHOP
+            </v-btn>
+
+            <v-btn
+              to="/products"
+              variant="text"
+              class="nav-link"
+              prepend-icon="mdi-view-grid-outline"
+            >
+              COLLECTIONS
+            </v-btn>
           </div>
 
+          <!-- WISHLIST BUTTON -->
+          <v-btn
+            icon
+            variant="text"
+            class="wishlist-nav-btn overflow-visible"
+            @click="wishlistDrawer = true"
+          >
+            <v-badge
+              :content="wishlist.length"
+              :model-value="wishlist.length > 0"
+              color="red"
+              floating
+              class="overflow-visible"
+            >
+              <v-icon size="25">mdi-heart-outline</v-icon>
+            </v-badge>
+          </v-btn>
           <v-spacer />
 
+          <!-- DESKTOP CART -->
           <div class="desktop-cart">
             <v-badge
               :content="cartItemCount"
               :model-value="cartItemCount > 0"
               color="red"
             >
-              <v-btn icon variant="text" @click="cartDrawer = true">
-                <v-icon size="27">mdi-cart-outline</v-icon>
+              <v-btn
+                icon
+                variant="flat"
+                class="navbar-cart-button"
+                @click="cartDrawer = true"
+              >
+                <v-icon size="23">mdi-cart-outline</v-icon>
               </v-btn>
             </v-badge>
           </div>
 
+          <!-- MOBILE MENU -->
           <div class="mobile-menu">
             <v-btn icon variant="text" @click="mobileMenu = !mobileMenu">
               <v-icon size="28">mdi-menu</v-icon>
@@ -254,29 +300,123 @@
         </div>
       </v-navigation-drawer>
 
-      <!-- CHECKOUT DIALOG -->
-      <v-dialog v-model="checkoutDialog" max-width="1050" scrollable>
-        <v-card rounded="lg" class="checkout-card">
-          <div class="checkout-header">
+      <!-- WISHLIST DRAWER -->
+      <v-navigation-drawer
+        v-model="wishlistDrawer"
+        location="right"
+        temporary
+        width="420"
+        class="wishlist-drawer"
+      >
+        <div class="wishlist-header pa-5">
+          <div class="d-flex align-center justify-space-between">
             <div>
-              <span class="cart-header-eyebrow">Caster & Sy — CHECKOUT</span>
-              <h2>COMPLETE YOUR ORDER.</h2>
+              <h2 class="text-h5 font-weight-bold">My Wishlist</h2>
+
+              <p class="text-caption text-grey">
+                {{ wishlist.length }} saved items
+              </p>
             </div>
+
             <v-btn
               icon="mdi-close"
               variant="text"
+              @click="wishlistDrawer = false"
+            />
+          </div>
+        </div>
+
+        <v-divider />
+
+        <!-- EMPTY WISHLIST -->
+        <div
+          v-if="wishlist.length === 0"
+          class="wishlist-empty pa-8 text-center"
+        >
+          <v-icon size="65" color="grey-lighten-1"> mdi-heart-outline </v-icon>
+
+          <h3 class="mt-4">Your wishlist is empty</h3>
+
+          <p class="text-grey mt-2">Save your favorite products here.</p>
+
+          <v-btn color="black" class="mt-5" @click="wishlistDrawer = false">
+            Continue Shopping
+          </v-btn>
+        </div>
+
+        <!-- WISHLIST ITEMS -->
+        <div v-else class="pa-4">
+          <v-card
+            v-for="productId in wishlist"
+            :key="productId"
+            flat
+            class="wishlist-item mb-4"
+          >
+            <div
+              v-if="
+                products.find((product) => product.documentId === productId)
+              "
+              class="d-flex align-center ga-3"
+            >
+              <div class="wishlist-product-info flex-grow-1">
+                <h4>
+                  {{
+                    products.find((product) => product.documentId === productId)
+                      ?.name
+                  }}
+                </h4>
+
+                <p class="text-grey mt-1">
+                  {{
+                    formatPrice(
+                      products.find(
+                        (product) => product.documentId === productId,
+                      )?.price ?? 0,
+                    )
+                  }}
+                </p>
+              </div>
+
+              <v-btn
+                icon="mdi-trash-can-outline"
+                variant="text"
+                color="red"
+                size="small"
+                @click="removeFromWishlist(productId)"
+              />
+            </div>
+          </v-card>
+        </div>
+      </v-navigation-drawer>
+
+      <!-- CHECKOUT DIALOG -->
+      <v-dialog v-model="checkoutDialog" max-width="1050" scrollable>
+        <v-card rounded="lg" class="checkout-card" color="#181818">
+          <!-- HEADER -->
+          <div class="checkout-header">
+            <div>
+              <span class="cart-header-eyebrow" style="color: #b6ff00">
+                Caster & Sy — CHECKOUT
+              </span>
+              <h2 style="color: white">COMPLETE YOUR ORDER.</h2>
+            </div>
+
+            <v-btn
+              icon="mdi-close"
+              variant="text"
+              color="white"
               @click="checkoutDialog = false"
               :disabled="isCheckingOut"
             />
           </div>
 
-          <v-divider />
+          <v-divider color="#383838" />
 
           <v-card-text class="pa-5 pa-md-8">
             <v-row>
               <!-- CUSTOMER INFORMATION -->
               <v-col cols="12" md="6">
-                <h3 class="checkout-section-title mb-5">
+                <h3 class="checkout-section-title mb-5" style="color: #b6ff00">
                   CUSTOMER INFORMATION
                 </h3>
 
@@ -284,6 +424,9 @@
                   v-model="customer.name"
                   label="Full Name"
                   variant="outlined"
+                  base-color="#888888"
+                  color="#B6FF00"
+                  bg-color="#252525"
                   :disabled="isCheckingOut"
                   :error-messages="checkoutErrors.name"
                 />
@@ -293,6 +436,9 @@
                   label="Email Address"
                   type="email"
                   variant="outlined"
+                  base-color="#888888"
+                  color="#B6FF00"
+                  bg-color="#252525"
                   :disabled="isCheckingOut"
                   :error-messages="checkoutErrors.email"
                 />
@@ -301,6 +447,9 @@
                   v-model="customer.phone"
                   label="Phone Number"
                   variant="outlined"
+                  base-color="#888888"
+                  color="#B6FF00"
+                  bg-color="#252525"
                   :disabled="isCheckingOut"
                   :error-messages="checkoutErrors.phone"
                 />
@@ -309,33 +458,48 @@
                   v-model="customer.address"
                   label="Complete Shipping Address"
                   variant="outlined"
+                  base-color="#888888"
+                  color="#B6FF00"
+                  bg-color="#252525"
                   rows="3"
                   :disabled="isCheckingOut"
                   :error-messages="checkoutErrors.address"
                 />
 
-                <h3 class="checkout-section-title mb-4 mt-3">PAYMENT METHOD</h3>
+                <h3
+                  class="checkout-section-title mb-4 mt-3"
+                  style="color: #b6ff00"
+                >
+                  PAYMENT METHOD
+                </h3>
 
                 <v-radio-group
                   v-model="customer.paymentMethod"
+                  color="#B6FF00"
                   :disabled="isCheckingOut"
                   :error-messages="checkoutErrors.paymentMethod"
                 >
-                  <v-radio label="Cash on Delivery (COD)" value="COD" />
-                  <v-radio label="GCash" value="GCash" />
+                  <v-radio
+                    label="Cash on Delivery (COD)"
+                    value="COD"
+                    color="#B6FF00"
+                  />
+                  <v-radio label="GCash" value="GCash" color="#B6FF00" />
                 </v-radio-group>
               </v-col>
 
               <!-- ORDER SUMMARY -->
               <v-col cols="12" md="6">
-                <h3 class="checkout-section-title mb-5">ORDER SUMMARY</h3>
+                <h3 class="checkout-section-title mb-5" style="color: #b6ff00">
+                  ORDER SUMMARY
+                </h3>
 
                 <div
                   v-for="item in cart"
                   :key="item.documentId"
                   class="checkout-item"
                 >
-                  <div class="checkout-item-image">
+                  <div class="checkout-item-image" style="background: #252525">
                     <v-img
                       v-if="getImageUrl(item.image)"
                       :src="getImageUrl(item.image)"
@@ -343,36 +507,44 @@
                       height="65"
                       cover
                     />
-                    <v-icon v-else size="30">mdi-image-outline</v-icon>
+                    <v-icon v-else size="30" color="#888888">
+                      mdi-image-outline
+                    </v-icon>
                   </div>
 
                   <div class="flex-grow-1">
-                    <div class="font-weight-bold">{{ item.name }}</div>
-                    <div class="text-caption text-grey">
+                    <div class="font-weight-bold" style="color: white">
+                      {{ item.name }}
+                    </div>
+                    <div class="text-caption" style="color: #999999">
                       {{ formatPrice(item.price) }} × {{ item.quantity }}
                     </div>
                   </div>
 
-                  <strong>
+                  <strong style="color: white">
                     {{ formatPrice(item.price * item.quantity) }}
                   </strong>
                 </div>
 
-                <v-divider class="my-5" />
+                <v-divider class="my-5" color="#383838" />
 
                 <div class="d-flex justify-space-between mb-3">
-                  <span>Total Items</span>
-                  <strong>{{ cartItemCount }}</strong>
+                  <span style="color: #999999">Total Items</span>
+                  <strong style="color: white">{{ cartItemCount }}</strong>
                 </div>
 
                 <div class="d-flex justify-space-between mb-3">
-                  <span>Subtotal</span>
-                  <strong>{{ formatPrice(cartTotal) }}</strong>
+                  <span style="color: #999999">Subtotal</span>
+                  <strong style="color: white">
+                    {{ formatPrice(cartTotal) }}
+                  </strong>
                 </div>
 
                 <div class="d-flex justify-space-between text-h6 mt-5">
-                  <strong>TOTAL</strong>
-                  <strong>{{ formatPrice(cartTotal) }}</strong>
+                  <strong style="color: white">TOTAL</strong>
+                  <strong style="color: #b6ff00">
+                    {{ formatPrice(cartTotal) }}
+                  </strong>
                 </div>
 
                 <v-alert
@@ -386,10 +558,11 @@
 
                 <v-btn
                   block
-                  color="black"
+                  color="#B6FF00"
                   size="x-large"
                   rounded="pill"
-                  class="mt-6"
+                  class="mt-6 font-weight-bold"
+                  style="color: #111111"
                   :loading="isCheckingOut"
                   :disabled="cart.length === 0"
                   @click="submitCheckout"
@@ -398,7 +571,7 @@
                   <v-icon end>mdi-arrow-right</v-icon>
                 </v-btn>
 
-                <p class="text-caption text-grey text-center mt-3">
+                <p class="text-caption text-center mt-3" style="color: #888888">
                   Please review your information before placing your order.
                 </p>
               </v-col>
@@ -406,7 +579,6 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-
       <!-- ORDER SUCCESS DIALOG -->
       <v-dialog v-model="successDialog" max-width="520" persistent>
         <v-card class="success-card" rounded="xl">
@@ -682,15 +854,18 @@
                   <v-icon size="60">mdi-image-outline</v-icon>
                 </div>
 
-                <!-- WISHLIST -->
+                <!-- CLICKABLE WISHLIST BUTTON -->
                 <v-btn
                   icon
                   size="small"
-                  color="white"
-                  class="wishlist-button"
+                  variant="flat"
+                  class="wishlist-heart"
                   @click.stop="toggleWishlist(product)"
                 >
-                  <v-icon :color="isWishlisted(product) ? 'red' : 'black'">
+                  <v-icon
+                    :color="isWishlisted(product) ? 'red' : 'grey-darken-1'"
+                    size="24"
+                  >
                     {{
                       isWishlisted(product) ? "mdi-heart" : "mdi-heart-outline"
                     }}
@@ -848,7 +1023,8 @@ useHead({
   meta: [
     {
       name: "description",
-      content: "Discover everyday essentials and timeless finds at Caster & Sy.",
+      content:
+        "Discover everyday essentials and timeless finds at Caster & Sy.",
     },
     {
       name: "theme-color",
@@ -885,10 +1061,14 @@ const selectedCategory = ref("All");
 
 // DRAWERS
 const cartDrawer = ref(false);
+const wishlistDrawer = ref(false);
 const mobileMenu = ref(false);
 
 // CART
 const cart = ref<CartItem[]>([]);
+
+// WISHLIST
+const wishlist = ref<string[]>([]);
 
 // NOTIFICATION
 const showCartMessage = ref(false);
@@ -1013,6 +1193,8 @@ function removeFromCart(documentId: string) {
 // CLEAR CART
 function clearCart() {
   cart.value = [];
+  cartMessage.value = "Your cart has been cleared.";
+  showCartMessage.value = true;
 }
 
 // CHECKOUT STATE
@@ -1048,6 +1230,7 @@ function openCheckout() {
   }
 
   checkoutError.value = "";
+
   Object.keys(checkoutErrors).forEach((key) => {
     checkoutErrors[key as keyof typeof checkoutErrors] = "";
   });
@@ -1245,8 +1428,8 @@ async function submitCheckout() {
         console.error("WARNING: PRODUCT IMAGE IS MISSING AFTER UPDATE!");
       }
     }
-    // STEP 6: SUCCESS
 
+    // STEP 6: SUCCESS
     console.log(
       "PRODUCT LISTING AFTER CHECKOUT:",
       products.value.map((product) => ({
@@ -1255,7 +1438,10 @@ async function submitCheckout() {
         imageUrl: getImageUrl(product.image),
       })),
     );
+
     await refreshProducts();
+
+    // CLEAR CART AFTER SUCCESSFUL CHECKOUT
     cart.value = [];
 
     customer.name = "";
@@ -1304,9 +1490,80 @@ function formatPrice(price: number): string {
   }).format(price || 0);
 }
 
-// WISHLIST
-const wishlist = ref<string[]>([]);
+// ========================================
+// CART & WISHLIST PERSISTENCE
+// ========================================
 
+// LOAD SAVED CART AND WISHLIST
+onMounted(() => {
+  // LOAD CART
+  const savedCart = localStorage.getItem("caster-cart");
+
+  if (savedCart) {
+    try {
+      const parsedCart = JSON.parse(savedCart);
+
+      if (Array.isArray(parsedCart)) {
+        cart.value = parsedCart.filter(
+          (item) =>
+            item &&
+            typeof item.documentId === "string" &&
+            typeof item.quantity === "number" &&
+            item.quantity > 0,
+        );
+      }
+    } catch (error) {
+      console.error("Failed to load cart:", error);
+      cart.value = [];
+    }
+  }
+
+  // LOAD WISHLIST
+  const savedWishlist = localStorage.getItem("caster-wishlist");
+
+  if (savedWishlist) {
+    try {
+      const parsedWishlist = JSON.parse(savedWishlist);
+
+      if (Array.isArray(parsedWishlist)) {
+        wishlist.value = parsedWishlist.filter(
+          (id): id is string => typeof id === "string",
+        );
+      }
+    } catch (error) {
+      console.error("Failed to load wishlist:", error);
+      wishlist.value = [];
+    }
+  }
+});
+
+// SAVE CART AUTOMATICALLY
+watch(
+  cart,
+  (newCart) => {
+    if (import.meta.client) {
+      localStorage.setItem("caster-cart", JSON.stringify(newCart));
+    }
+  },
+  { deep: true },
+);
+
+// SAVE WISHLIST AUTOMATICALLY
+watch(
+  wishlist,
+  (newWishlist) => {
+    if (import.meta.client) {
+      localStorage.setItem("caster-wishlist", JSON.stringify(newWishlist));
+    }
+  },
+  { deep: true },
+);
+
+// ========================================
+// WISHLIST FUNCTIONS
+// ========================================
+
+// TOGGLE WISHLIST
 function toggleWishlist(product: Product) {
   const productId = product.documentId;
 
@@ -1321,8 +1578,17 @@ function toggleWishlist(product: Product) {
   showCartMessage.value = true;
 }
 
+// CHECK WISHLIST
 function isWishlisted(product: Product): boolean {
   return wishlist.value.includes(product.documentId);
+}
+
+// REMOVE WISHLIST ITEM
+function removeFromWishlist(productId: string) {
+  wishlist.value = wishlist.value.filter((id) => id !== productId);
+
+  cartMessage.value = "Product removed from wishlist.";
+  showCartMessage.value = true;
 }
 
 // NEWSLETTER
@@ -1399,25 +1665,83 @@ function subscribeNewsletter() {
   font-weight: 1000;
   letter-spacing: -4px;
   line-height: 1;
+  transition: transform 0.3s ease;
 }
 
+.brand-logo:hover {
+  transform: scale(1.06);
+}
+
+/* DESKTOP NAVIGATION */
 .desktop-navigation {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.desktop-navigation :deep(.v-btn) {
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+.desktop-navigation .nav-link {
+  min-height: 42px;
+  padding: 0 17px !important;
+  border: 1px solid transparent;
+  border-radius: 30px !important;
+  color: #222 !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: 1px !important;
+  transition: all 0.3s ease !important;
 }
 
+.desktop-navigation .nav-link :deep(.v-icon) {
+  font-size: 19px;
+  margin-inline-end: 5px;
+}
+
+.desktop-navigation .nav-link:hover {
+  border-color: #b8ff45;
+  background: #b8ff45 !important;
+  color: #101510 !important;
+  transform: translateY(-2px);
+}
+
+/* CART BUTTON */
 .desktop-cart {
   display: flex;
   align-items: center;
 }
 
+.navbar-wishlist-button {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  color: #222 !important;
+  background: white !important;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.navbar-wishlist-button:hover {
+  background: #b8ff45 !important;
+  color: #111 !important;
+  transform: translateY(-3px);
+}
+
+.navbar-cart-button {
+  width: 44px !important;
+  height: 44px !important;
+  border: 1px solid #deded8;
+  border-radius: 50% !important;
+  background: white !important;
+  color: #111 !important;
+  transition: all 0.3s ease !important;
+}
+
+.navbar-cart-button:hover {
+  border-color: #b8ff45;
+  background: #b8ff45 !important;
+  transform: translateY(-3px);
+}
+
+/* MOBILE MENU */
 .mobile-menu {
   display: none;
 }
@@ -2119,6 +2443,50 @@ function subscribeNewsletter() {
 
 .wishlist-button:hover {
   transform: scale(1.12);
+}
+
+.wishlist-drawer {
+  background: #f4f4f0 !important;
+}
+
+.wishlist-header {
+  background: #f4f4f0;
+}
+
+.wishlist-item {
+  padding: 15px;
+  border-radius: 12px !important;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.wishlist-product-info h4 {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.wishlist-empty {
+  margin-top: 100px;
+}
+
+.wishlist-heart {
+  background: white !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+}
+
+.wishlist-heart:hover {
+  transform: scale(1.12);
+}
+
+.navbar-wishlist-button {
+  border-radius: 50%;
+  transition: 0.3s ease;
+}
+
+.navbar-wishlist-button:hover {
+  background: #b8ff45;
+  transform: translateY(-3px);
 }
 
 /* STOCK */
